@@ -3,7 +3,19 @@ use warnings;
 use Test::More;
 
 use lib './Modules';
-use Solution qw(backwards_prime);
+use Solution qw(backwards_prime is_a_prime);
+
+sub prime_testing {
+	my ($number, $ans) = @_;
+	my $result = is_a_prime($number);
+	is($ans, $result, "Data: $ans, $result\n");
+}
+
+subtest "primes" => sub {
+	prime_testing(6, 0);
+	prime_testing(11, 1);
+	prime_testing(79, 1);
+};
 
 sub testing {
     my ($start, $nd, $exp) = @_;
@@ -24,7 +36,6 @@ subtest "basics" => sub {
     testing(301, 399, $a);
     $a = [];
     testing(501, 599, $a);
-    
 };
 
 done_testing();
