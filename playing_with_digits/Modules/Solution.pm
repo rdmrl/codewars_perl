@@ -10,11 +10,10 @@ sub dig_pow {
 	my ($n, $p) = @_;
 
 	my @digits = split //, $n;
-	my $digit_count = scalar @digits;
 
 	my $sum = 0;
-	for (my $ix = 0; $ix < $digit_count; $ix++, $p++) {
-		$sum += $digits[$ix] ** $p;
+	for my $i (0 .. $#digits) {
+		$sum += $digits[$i] ** ($p + $i);
 	}
 
 	($sum % $n == 0) ? ($sum / $n) : -1;
