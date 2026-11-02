@@ -10,44 +10,43 @@ our @EXPORT_OK = qw(convert_fracts gcd gcd_euclid lcd);
 sub convert_fracts {
 	my ($input) = @_;
 
-	my @output;
-
-	my @nums;
-	my @denoms;
+	my $lcd = 1;
 	for my $ref1 (@{$input}) {
 		my @arr = @{$ref1};
-		push @nums, $arr[0];
-		push @denoms, $arr[1];
+		$lcd = lcd($lcd, $arr[1]);
 	}
 
-	my $n1 = shift @nums;
-	my $n2 = shift @nums;
-	my $num_gcd = gcd($n1, $n2);
-	for my $num (@nums) {
-		$num_gcd = gcd($num_gcd, $num);
-	}
-
-	my $dn1 = shift @denoms;
-	my $dn2 = shift @denoms;
-	my $lcd = lcd($dn1, $dn2);
-	for my $denom (@denoms) {
-		$lcd = lcd($lcd, $denom);
-	}
-
-	if ($lcd % $num_gcd == 0) {
-		$lcd /= $num_gcd;
-	}
-
+	my @output;
 	for my $ref1 (@{$input}) {
 		my @arr = @{$ref1};
 		push @output, [$arr[0] * $lcd / $arr[1], $lcd];
 	}
 
-	\@output;
+	# Check if the fraction can be further reduced.
+	my $num_gcd = 0;
+	for my $arr1 (@output) {
+		$num_gcd = gcd_euclid($num_gcd, @{$arr1}[0]);
+	}
+
+	# To reduce the fraction.
+	if ($lcd % $num_gcd == 0) {
+		my $new_lcd = $lcd / $num_gcd;
+
+		my @new_output;
+		for my $arr2 (@output) {
+			push @new_output, [@{$arr2}[0] / $num_gcd, $new_lcd];
+		}
+		\@new_output;
+	} else {
+		\@output;
+	}
 }
 
-sub gcd {
+sub gcd2 {
 	my ($n1, $n2) = @_;
+
+	return $n1 if $n2 == 0;
+	return $n2 if $n1 == 0;
 
 	while ($n1 != 0 && $n2 != 0) {
 		if ($n1 > $n2) {
