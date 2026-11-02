@@ -14,7 +14,6 @@ sub array2D_to_string {
     return substr($res, 0, -2) . ")";
 }
 
-=for
 sub dotest {
     my ($l, $exp) = @_;
     my $ans = convert_fracts($l);
@@ -29,8 +28,8 @@ subtest "basics" => sub {
     dotest([[69, 130], [87, 1310], [3, 4]], [[18078,34060], [2262,34060], [25545,34060]]);
     dotest([[77, 130], [84, 131], [3, 4]], [[20174,34060], [21840,34060], [25545,34060]]);
 };
-=cut
 
+=for
 sub dotest_gcd {
 	my ($n1, $n2, $ans) = @_;
 	my $gcd = gcd($n1, $n2);
@@ -38,14 +37,12 @@ sub dotest_gcd {
 	is($gcd, $ans, undef);
 };
 
-=for
 subtest "gcd" => sub {
 	dotest_gcd(10, 15, 5);
 	dotest_gcd(48, 180, 12);
 	dotest_gcd(128, 96, 32);
 	dotest_gcd(4789084, 957196, 388);
 };
-=cut
 
 sub dotest_gcd_euclid {
 	my ($n1, $n2, $ans) = @_;
@@ -74,7 +71,6 @@ subtest "lcd" => sub {
 	dotest_lcd(4789084, 957196, 11814670228);
 };
 
-=for
 subtest "benchmark" => sub {
 	my @nums;
 

@@ -8,7 +8,42 @@ our @EXPORT_OK = qw(convert_fracts gcd gcd_euclid lcd);
 
 # input: array_ref of array_refs; return: array_ref of integers
 sub convert_fracts {
-    [[6,12]];
+	my ($input) = @_;
+
+	my @output;
+
+	my @nums;
+	my @denoms;
+	for my $ref1 (@{$input}) {
+		my @arr = @{$ref1};
+		push @nums, $arr[0];
+		push @denoms, $arr[1];
+	}
+
+	my $n1 = shift @nums;
+	my $n2 = shift @nums;
+	my $num_gcd = gcd($n1, $n2);
+	for my $num (@nums) {
+		$num_gcd = gcd($num_gcd, $num);
+	}
+
+	my $dn1 = shift @denoms;
+	my $dn2 = shift @denoms;
+	my $lcd = lcd($dn1, $dn2);
+	for my $denom (@denoms) {
+		$lcd = lcd($lcd, $denom);
+	}
+
+	if ($lcd % $num_gcd == 0) {
+		$lcd /= $num_gcd;
+	}
+
+	for my $ref1 (@{$input}) {
+		my @arr = @{$ref1};
+		push @output, [$arr[0] * $lcd / $arr[1], $lcd];
+	}
+
+	\@output;
 }
 
 sub gcd {
