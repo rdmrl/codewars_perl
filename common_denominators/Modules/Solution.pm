@@ -4,7 +4,7 @@ use 5.30.0;
 use strict;
 use warnings;
 use Exporter qw(import);
-our @EXPORT_OK = qw(convert_fracts gcd gcd_euclid);
+our @EXPORT_OK = qw(convert_fracts gcd gcd_euclid lcd);
 
 # input: array_ref of array_refs; return: array_ref of integers
 sub convert_fracts {
@@ -38,3 +38,7 @@ sub gcd_euclid {
 	}
 }
 
+sub lcd {
+	my ($n1, $n2) = @_;
+	return $n1 * $n2 / gcd_euclid($n1, $n2);
+}

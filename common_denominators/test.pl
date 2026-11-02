@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use Test::More;
 use lib './Modules';
-use Solution qw(convert_fracts gcd gcd_euclid);
+use Solution qw(convert_fracts gcd gcd_euclid lcd);
 use Benchmark;
 
 sub array2D_to_string {
@@ -54,15 +54,27 @@ sub dotest_gcd_euclid {
 	is($gcd, $ans, undef);
 };
 
-=for
 subtest "gcd_euclid" => sub {
 	dotest_gcd_euclid(10, 15, 5);
 	dotest_gcd_euclid(48, 180, 12);
 	dotest_gcd_euclid(128, 96, 32);
 	dotest_gcd_euclid(4789084, 957196, 388);
 };
-=cut
 
+sub dotest_lcd{
+	my ($n1, $n2, $ans) = @_;
+	my $lcd = lcd($n1, $n2);
+	is($lcd, $ans, "Data: res: $lcd, ans: $ans\n");
+};
+
+subtest "lcd" => sub {
+	dotest_lcd(10, 15, 30);
+	dotest_lcd(48, 180, 720);
+	dotest_lcd(128, 96, 384);
+	dotest_lcd(4789084, 957196, 11814670228);
+};
+
+=for
 subtest "benchmark" => sub {
 	my @nums;
 
@@ -75,5 +87,6 @@ subtest "benchmark" => sub {
 		'gcd_euclid' => sub { dotest_gcd_euclid(@$_) for @nums },
 	});
 };
+=cut
 
 done_testing();
