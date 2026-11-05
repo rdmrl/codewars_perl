@@ -23,7 +23,6 @@ subtest "basics" => sub {
     dotest($a, ["NORTH", "EAST"]);
     $a = [];
     dotest($a, []);
-
 };
 
 done_testing();
