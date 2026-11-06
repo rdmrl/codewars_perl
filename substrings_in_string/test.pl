@@ -179,22 +179,18 @@ subtest "basics_ex_base" => sub {
     my $str = "GCAGCaGCAGCgatggcggcgctgaggggtcttgggggctctaggccggccacctactgg";
     my $sol = "1 7";
     testing_ex_str($str, "AceI", $sol);
-=for
     $str = "GCAGCaGCAGCgatggcggcgctgaggggtcttgggggctctaggccggccacctactgg";
     $sol = "AaeI is not in given string";
     testing_ex_str($str, "AaeI", $sol);
     $str = "GCAGCaGCAGCgatggcggcgctgaggggtcttgggggctctaggccggccacctactgg";
     $sol = "This query name does not exist in given Base";
     testing_ex_str($str, "XaeI", $sol);    
-=cut
 };
 
-=for
 subtest "basics_ex_base1_data1" => sub {
     my $sol = "40 1347";
     testing_ex_data1(data1, "BasI", $sol);
 };
-=cut
 
 done_testing();
 
