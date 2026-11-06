@@ -7,18 +7,18 @@ use Exporter qw(import);
 our @EXPORT_OK = qw(get_pos);
 use Data::Dumper qw(Dumper);
 
-my %replacements = (
-    "R" => ["G", "A"],
-    "Y" => ["C", "T"],
-    "M" => ["A", "C"],
-	"K" => ["G", "T"],
-	"S" => ["G", "C"],
-	"W" => ["A", "T"],
-	"B" => ["C", "G", "T"],
-	"D" => ["A", "G", "T"],
-	"H" => ["A", "C", "T"],
-	"V" => ["A", "C", "G"],
-	"N" => ["A", "C", "G", "T"]
+my %replacement_regexes = (
+    "R" => /(G|A)/,
+    "Y" => /(C|T)/,
+    "M" => /(A|C)/,
+	"K" => /(G|T)/,
+	"S" => /(G|C)/,
+	"W" => /(A|T)/,
+	"B" => /(C|G|T)/,
+	"D" => /(A|G|T)/,
+	"H" => /(A|C|T)/,
+	"V" => /(A|C|G)/,
+	"N" => /(A|C|G|T)/
 );
 
 #input: base, string, query; output: string with positions
@@ -30,14 +30,18 @@ sub get_pos {
 
 	my $substring_label;
 
+	print "query: $query\n";
+
 	# Find the line with the matching query.
 	my @matching_lines = grep(/^$query[\s].*/, @base_lines);
+	print Dumper(\@matching_lines);
 	if (scalar @matching_lines > 0) {
 		# Take the first match.
 		my $matching_line = pop @matching_lines;
 		if ($matching_line =~ /^.*\s(\w+)\s*$/) {
 			# Extract the label from the end of the string.
 			$substring_label = $1;
+			print "sub.label: $substring_label\n";
 		}
 	}
 
@@ -45,8 +49,8 @@ sub get_pos {
 	if ($substring_label) {
 		# Find the labels with the replaced characters.
 		my $updated_labels = update_label($substring_label);
+		print Dumper($updated_labels);
 		for my $upd_label (@{$updated_labels}) {
-			print "upd.label: ", $upd_label, "\n";
 			my $ix = 0;
 			my $next_ix = 0;
 			my $label_length = length($upd_label);
@@ -84,7 +88,7 @@ sub update_label {
 
 	my @updated_labels;
 	for my $old_letter (@letters_to_replace) {
-		for my $new_letter (@{$replacements{$old_letter}}) {
+		for my $new_letter (@{$replacement_regexes{$old_letter}}) {
 			my $new_label = $label =~ s/$old_letter/$new_letter/gr;
 			push @updated_labels, lc $new_label;
 		}
