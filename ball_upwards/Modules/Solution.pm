@@ -8,9 +8,7 @@ our @EXPORT_OK = qw(max_ball);
 
 use constant G => 9.81;
 sub max_ball {
-    my ($v0) = @_;
-
-	my $v_in_mps = $v0 / 3.6;
+	my $v_in_mps = (shift) / 3.6;
 
 	my $steps = 0;
 	my $half_g = 0.5 * G;
@@ -18,17 +16,13 @@ sub max_ball {
 	my $h = 0;
 	my $prev_h = 0;
 
-	while ($h >= 0) {
-		$prev_h = $h;
+	while (1) {
 		$h = ($v_in_mps * $t) - ($half_g * $t ** 2);
+		last if ($h < $prev_h);
+		$prev_h = $h;
 
 		$t += 0.1;
-
-		if ($h > $prev_h) {
-			$steps++;
-		} else {
-			last;
-		}
+		$steps++;
 	}
 
 	$steps;
