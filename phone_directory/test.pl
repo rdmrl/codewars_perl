@@ -19,11 +19,9 @@ my $dr = '/+1-541-754-3010 156 Alphand_St. <J Steeve>\n 133, Green, Rd. <E Kustu
   
 subtest "basics" => sub {    
     testing($dr, '8-421-674-8974', 'Phone => 8-421-674-8974, Name => Elizabeth Corber, Address => Via Papa Roma');
-=for
     testing($dr, '48-421-674-8974', 'Phone => 48-421-674-8974, Name => Anastasia, Address => Via Quirinal Roma');
     testing($dr, '1-098-512-2222', 'Error => Too many people: 1-098-512-2222');
     testing($dr, '5-555-555-5555', 'Error => Not found: 5-555-555-5555');
-=cut
 };
 
 done_testing();
