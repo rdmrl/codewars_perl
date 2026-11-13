@@ -16,7 +16,7 @@ sub max_ball {
 	my $h = 0;
 	my $prev_h = 0;
 
-	while (1) {
+	while ($h >= 0) {
 		$h = ($v_in_mps * $t) - ($half_g * $t ** 2);
 		last if ($h < $prev_h);
 		$prev_h = $h;
